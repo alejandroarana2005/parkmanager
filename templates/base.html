@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block titulo %}ParkManager{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body { background-color: #f8f9fa; }
+        .sidebar {
+            min-height: 100vh;
+            background-color: #1a1a2e;
+        }
+        .sidebar a {
+            color: #a0a0b0;
+            text-decoration: none;
+            display: block;
+            padding: 10px 20px;
+            border-radius: 6px;
+            margin: 2px 8px;
+        }
+        .sidebar a:hover, .sidebar a.active {
+            background-color: #16213e;
+            color: #ffffff;
+        }
+        .sidebar .brand {
+            color: #ffffff;
+            font-size: 1.3rem;
+            font-weight: 600;
+            padding: 20px;
+            border-bottom: 1px solid #2a2a4a;
+            margin-bottom: 10px;
+        }
+        .main-content { padding: 30px; }
+        .card { border: none; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .stat-card { border-left: 4px solid; }
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+
+        <!-- Barra lateral -->
+        <div class="col-md-2 sidebar p-0">
+            <div class="brand">
+                <i class="bi bi-p-circle-fill"></i> ParkManager
+            </div>
+            <a href="/" class="{% block nav_inicio %}{% endblock %}">
+                <i class="bi bi-speedometer2"></i> Dashboard
+            </a>
+            <a href="/usuarios/" class="{% block nav_usuarios %}{% endblock %}">
+                <i class="bi bi-people"></i> Usuarios
+            </a>
+            <a href="/vehiculos/" class="{% block nav_vehiculos %}{% endblock %}">
+                <i class="bi bi-car-front"></i> Vehículos
+            </a>
+            <a href="/registros/" class="{% block nav_registros %}{% endblock %}">
+                <i class="bi bi-clock-history"></i> Registros
+            </a>
+            <hr style="border-color: #2a2a4a; margin: 10px 20px;">
+            <a href="/admin/" target="_blank">
+                <i class="bi bi-shield-lock"></i> Panel Admin
+            </a>
+            <a href="/api/" target="_blank">
+                <i class="bi bi-braces"></i> API REST
+            </a>
+        </div>
+
+        <!-- Contenido principal -->
+        <div class="col-md-10 main-content">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            {% block contenido %}{% endblock %}
+        </div>
+
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

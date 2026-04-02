@@ -70,3 +70,77 @@ class RegistroParqueoViewSet(viewsets.ModelViewSet):
             'total_cobrado': total,
             'registro': serializer.data
         })
+        
+        # ─────────────────────────────────────────
+# VISTAS FRONTEND
+# ─────────────────────────────────────────
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+
+def vista_inicio(request):
+    context = {
+        'total_usuarios':   Usuario.objects.count(),
+        'total_vehiculos':  Vehiculo.objects.count(),
+        'total_registros':  RegistroParqueo.objects.count(),
+        'vehiculos_activos': RegistroParqueo.objects.filter(fecha_salida__isnull=True).count(),
+        'registros_activos': RegistroParqueo.objects.filter(fecha_salida__isnull=True),
+    }
+    return render(request, 'parking/inicio.html', context)
+
+def vista_usuarios(request):
+    return render(request, 'parking/usuarios.html', {
+        'usuarios': Usuario.objects.all()
+    })
+
+def crear_usuario(request):
+    if request.method == 'POST':
+        Usuario.objects.create(
+            nombre    = request.POST['nombre'],
+            documento = request.POST['documento'],
+            telefono  = request.POST.get('telefono', ''),
+            email     = request.POST.get('email', ''),
+        )
+        messages.success(request, 'Usuario registrado correctamente.')
+    return redirect('/usuarios/')
+
+def vista_vehiculos(request):
+    return render(request, 'parking/vehiculos.html', {
+        'vehiculos': Vehiculo.objects.all(),
+        'usuarios':  Usuario.objects.all(),
+    })
+
+def crear_vehiculo(request):
+    if request.method == 'POST':
+        Vehiculo.objects.create(
+            placa        = request.POST['placa'].upper(),
+            tipo         = request.POST['tipo'],
+            marca        = request.POST.get('marca', ''),
+            color        = request.POST.get('color', ''),
+            propietario  = Usuario.objects.get(id=request.POST['propietario']),
+        )
+        messages.success(request, 'Vehículo registrado correctamente.')
+    return redirect('/vehiculos/')
+
+def vista_registros(request):
+    return render(request, 'parking/registros.html', {
+        'registros': RegistroParqueo.objects.all(),
+        'vehiculos': Vehiculo.objects.all(),
+    })
+
+def registrar_entrada(request):
+    if request.method == 'POST':
+        RegistroParqueo.objects.create(
+            vehiculo      = Vehiculo.objects.get(id=request.POST['vehiculo']),
+            observaciones = request.POST.get('observaciones', ''),
+        )
+        messages.success(request, 'Entrada registrada correctamente.')
+    return redirect('/registros/')
+
+def registrar_salida(request, pk):
+    registro = get_object_or_404(RegistroParqueo, pk=pk)
+    if not registro.fecha_salida:
+        registro.fecha_salida = timezone.now()
+        registro.total_cobrado = registro.calcular_total()
+        registro.save()
+        messages.success(request, f'Salida registrada. Total: ${registro.total_cobrado}')
+    return redirect('/registros/')

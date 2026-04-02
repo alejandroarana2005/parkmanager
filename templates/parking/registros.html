@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% block titulo %}Registros — ParkManager{% endblock %}
+{% block nav_registros %}active{% endblock %}
+
+{% block contenido %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Registros de Parqueo</h2>
+    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalEntrada">
+        <i class="bi bi-box-arrow-in-down"></i> Registrar entrada
+    </button>
+</div>
+
+<div class="card p-4">
+    <table class="table table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Placa</th><th>Entrada</th>
+                <th>Salida</th><th>Total</th><th>Estado</th><th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in registros %}
+            <tr>
+                <td><span class="badge bg-dark">{{ r.vehiculo.placa }}</span></td>
+                <td>{{ r.fecha_entrada|date:"d/m/Y H:i" }}</td>
+                <td>
+                    {% if r.fecha_salida %}
+                        {{ r.fecha_salida|date:"d/m/Y H:i" }}
+                    {% else %}
+                        <span class="text-muted">—</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if r.total_cobrado %}
+                        ${{ r.total_cobrado }}
+                    {% else %}
+                        <span class="text-muted">—</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if r.fecha_salida %}
+                        <span class="badge bg-success">Completado</span>
+                    {% else %}
+                        <span class="badge bg-warning text-dark">En parqueadero</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if not r.fecha_salida %}
+                        <a href="/registros/salida/{{ r.id }}/" class="btn btn-sm btn-warning">
+                            <i class="bi bi-box-arrow-right"></i> Salida
+                        </a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+                <tr><td colspan="6" class="text-muted">No hay registros aún.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal registrar entrada -->
+<div class="modal fade" id="modalEntrada" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Registrar entrada</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="post" action="/registros/entrada/">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Vehículo</label>
+                        <select name="vehiculo" class="form-select" required>
+                            {% for v in vehiculos %}
+                                <option value="{{ v.id }}">{{ v.placa }} — {{ v.propietario.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Observaciones</label>
+                        <textarea name="observaciones" class="form-control" rows="2"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success">Registrar entrada</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

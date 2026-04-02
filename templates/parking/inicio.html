@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block titulo %}Dashboard — ParkManager{% endblock %}
+{% block nav_inicio %}active{% endblock %}
+
+{% block contenido %}
+<h2 class="mb-4">Dashboard</h2>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="card stat-card p-3" style="border-color: #0d6efd;">
+            <div class="text-muted small">Usuarios registrados</div>
+            <div class="fs-2 fw-bold text-primary">{{ total_usuarios }}</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-card p-3" style="border-color: #198754;">
+            <div class="text-muted small">Vehículos registrados</div>
+            <div class="fs-2 fw-bold text-success">{{ total_vehiculos }}</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-card p-3" style="border-color: #ffc107;">
+            <div class="text-muted small">Vehículos en parqueadero</div>
+            <div class="fs-2 fw-bold text-warning">{{ vehiculos_activos }}</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-card p-3" style="border-color: #dc3545;">
+            <div class="text-muted small">Registros totales</div>
+            <div class="fs-2 fw-bold text-danger">{{ total_registros }}</div>
+        </div>
+    </div>
+</div>
+
+<div class="card p-4">
+    <h5 class="mb-3">Vehículos actualmente en el parqueadero</h5>
+    {% if registros_activos %}
+    <table class="table table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Placa</th>
+                <th>Tipo</th>
+                <th>Propietario</th>
+                <th>Hora de entrada</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in registros_activos %}
+            <tr>
+                <td><span class="badge bg-dark">{{ r.vehiculo.placa }}</span></td>
+                <td>{{ r.vehiculo.tipo }}</td>
+                <td>{{ r.vehiculo.propietario.nombre }}</td>
+                <td>{{ r.fecha_entrada|date:"d/m/Y H:i" }}</td>
+                <td>
+                    <a href="/registros/salida/{{ r.id }}/" class="btn btn-sm btn-warning">
+                        <i class="bi bi-box-arrow-right"></i> Registrar salida
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p class="text-muted">No hay vehículos en el parqueadero en este momento.</p>
+    {% endif %}
+</div>
+{% endblock %}

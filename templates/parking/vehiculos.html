@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block titulo %}Vehículos — ParkManager{% endblock %}
+{% block nav_vehiculos %}active{% endblock %}
+
+{% block contenido %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Vehículos</h2>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalVehiculo">
+        <i class="bi bi-plus-circle"></i> Nuevo vehículo
+    </button>
+</div>
+
+<div class="card p-4">
+    <table class="table table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Placa</th><th>Tipo</th>
+                <th>Marca</th><th>Color</th><th>Propietario</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for v in vehiculos %}
+            <tr>
+                <td><span class="badge bg-dark">{{ v.placa }}</span></td>
+                <td>{{ v.tipo }}</td>
+                <td>{{ v.marca }}</td>
+                <td>{{ v.color }}</td>
+                <td>{{ v.propietario.nombre }}</td>
+            </tr>
+            {% empty %}
+                <tr><td colspan="5" class="text-muted">No hay vehículos registrados.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal nuevo vehículo -->
+<div class="modal fade" id="modalVehiculo" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Registrar nuevo vehículo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="post" action="/vehiculos/crear/">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Placa</label>
+                        <input type="text" name="placa" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Tipo</label>
+                        <select name="tipo" class="form-select" required>
+                            <option value="carro">Carro</option>
+                            <option value="moto">Moto</option>
+                            <option value="camion">Camión</option>
+                            <option value="bicicleta">Bicicleta</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Marca</label>
+                        <input type="text" name="marca" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Color</label>
+                        <input type="text" name="color" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Propietario</label>
+                        <select name="propietario" class="form-select" required>
+                            {% for u in usuarios %}
+                                <option value="{{ u.id }}">{{ u.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
