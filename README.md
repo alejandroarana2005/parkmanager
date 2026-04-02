@@ -90,7 +90,7 @@ python manage.py runserver
 
 ---
 
-## 📁 Estructura del proyecto
+##  Estructura del proyecto
 ```
 Parking/
 ├── parkmanager/        ← configuración del proyecto
@@ -111,7 +111,7 @@ Parking/
 
 ---
 
-## ⚡ Comandos útiles del día a día
+##  Comandos útiles del día a día
 
 | Acción | Comando |
 |--------|---------|
@@ -125,7 +125,7 @@ Parking/
 
 ---
 
-## 👥 Equipo de desarrollo
+##  Equipo de desarrollo
 
 - Alejandro Arana
 - Anthony Vanegas
