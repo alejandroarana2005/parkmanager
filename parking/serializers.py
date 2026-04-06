@@ -2,18 +2,14 @@ from rest_framework import serializers
 from .models import Usuario, Vehiculo, TarifaParqueo, RegistroParqueo
 
 
-# ─────────────────────────────────────────
-# SERIALIZER: Usuario
-# ─────────────────────────────────────────
+#USUARIO
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model  = Usuario
         fields = '__all__'
 
 
-# ─────────────────────────────────────────
-# SERIALIZER: Vehículo
-# ─────────────────────────────────────────
+#VEHICULO
 class VehiculoSerializer(serializers.ModelSerializer):
     # Muestra el nombre del propietario además del ID
     propietario_nombre = serializers.CharField(
@@ -26,18 +22,14 @@ class VehiculoSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-# ─────────────────────────────────────────
-# SERIALIZER: Tarifa
-# ─────────────────────────────────────────
+#TARIFA
 class TarifaParqueoSerializer(serializers.ModelSerializer):
     class Meta:
         model  = TarifaParqueo
         fields = '__all__'
 
 
-# ─────────────────────────────────────────
-# SERIALIZER: Registro de Parqueo
-# ─────────────────────────────────────────
+#REGISTRO DE PARQUEO
 class RegistroParqueoSerializer(serializers.ModelSerializer):
     # Campos de solo lectura para mostrar info del vehículo
     vehiculo_placa = serializers.CharField(

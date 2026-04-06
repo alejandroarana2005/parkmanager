@@ -12,33 +12,24 @@ from .serializers import (
 )
 
 
-# ─────────────────────────────────────────
-# VISTA: Usuario
-# ─────────────────────────────────────────
+#USUARIO
 class UsuarioViewSet(viewsets.ModelViewSet):
     queryset         = Usuario.objects.all()
     serializer_class = UsuarioSerializer
 
 
-# ─────────────────────────────────────────
-# VISTA: Vehículo
-# ─────────────────────────────────────────
+#VEHICULO
 class VehiculoViewSet(viewsets.ModelViewSet):
     queryset         = Vehiculo.objects.all()
     serializer_class = VehiculoSerializer
 
-
-# ─────────────────────────────────────────
-# VISTA: Tarifa
-# ─────────────────────────────────────────
+#TARIFA
 class TarifaParqueoViewSet(viewsets.ModelViewSet):
     queryset         = TarifaParqueo.objects.all()
     serializer_class = TarifaParqueoSerializer
 
 
-# ─────────────────────────────────────────
-# VISTA: Registro de Parqueo
-# ─────────────────────────────────────────
+#REGISTRO DE PARQUEO
 class RegistroParqueoViewSet(viewsets.ModelViewSet):
     queryset         = RegistroParqueo.objects.all()
     serializer_class = RegistroParqueoSerializer
@@ -51,14 +42,14 @@ class RegistroParqueoViewSet(viewsets.ModelViewSet):
         """
         registro = self.get_object()
 
-        # Validar que no tenga ya una salida registrada
+        # se valida que no tenga ya una salida registrada
         if registro.fecha_salida:
             return Response(
                 {'error': 'Este vehículo ya registró su salida.'},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        # Registrar la salida con la hora actual
+        #registrar la salida con la hora actual
         registro.fecha_salida = timezone.now()
         total = registro.calcular_total()
         registro.total_cobrado = total
@@ -72,8 +63,8 @@ class RegistroParqueoViewSet(viewsets.ModelViewSet):
         })
         
         # ─────────────────────────────────────────
-# VISTAS FRONTEND
-# ─────────────────────────────────────────
+
+#VISTAS PARA EL FRONT
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 

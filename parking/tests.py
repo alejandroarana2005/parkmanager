@@ -7,9 +7,7 @@ from decimal import Decimal
 from .models import Usuario, Vehiculo, TarifaParqueo, RegistroParqueo
 
 
-# ═══════════════════════════════════════════════════
-# PRUEBAS DEL MODELO: Usuario
-# ═══════════════════════════════════════════════════
+#PRUEBAS PARA USUARIO
 class UsuarioModelTest(TestCase):
 
     def setUp(self):
@@ -46,9 +44,7 @@ class UsuarioModelTest(TestCase):
             )
 
 
-# ═══════════════════════════════════════════════════
-# PRUEBAS DEL MODELO: Vehículo
-# ═══════════════════════════════════════════════════
+#PRUBAS PARA VEHICULO
 class VehiculoModelTest(TestCase):
 
     def setUp(self):
@@ -88,9 +84,7 @@ class VehiculoModelTest(TestCase):
             )
 
 
-# ═══════════════════════════════════════════════════
-# PRUEBAS DEL MODELO: Tarifa y cálculo de cobro
-# ═══════════════════════════════════════════════════
+#PRUEBAS PARA TARIFA Y CÁLCULO DE COSTOS
 class TarifaYCalculoTest(TestCase):
 
     def setUp(self):
@@ -127,7 +121,7 @@ class TarifaYCalculoTest(TestCase):
             vehiculo     = self.vehiculo,
             fecha_salida = ahora + timedelta(hours=2),
         )
-        # Ajustamos manualmente la fecha de entrada
+        
         registro.fecha_entrada = ahora
         total = registro.calcular_total()
         self.assertEqual(total, 10000.0)
@@ -144,9 +138,7 @@ class TarifaYCalculoTest(TestCase):
         self.assertEqual(total, 2500.0)
 
 
-# ═══════════════════════════════════════════════════
-# PRUEBAS DE LA API REST
-# ═══════════════════════════════════════════════════
+#PRUEBAS PARA LA API
 class APIUsuarioTest(TestCase):
 
     def setUp(self):

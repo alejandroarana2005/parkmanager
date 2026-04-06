@@ -1,8 +1,6 @@
 from django.db import models
 
-# ─────────────────────────────────────────
-# MODELO 1: Usuario del parqueadero
-# ─────────────────────────────────────────
+#USUARIO
 class Usuario(models.Model):
     nombre        = models.CharField(max_length=100)
     documento     = models.CharField(max_length=20, unique=True)
@@ -19,9 +17,7 @@ class Usuario(models.Model):
         ordering = ['nombre']
 
 
-# ─────────────────────────────────────────
-# MODELO 2: Vehículo
-# ─────────────────────────────────────────
+#VEHICULO
 class Vehiculo(models.Model):
     TIPO_CHOICES = [
         ('carro',  'Carro'),
@@ -48,9 +44,7 @@ class Vehiculo(models.Model):
         verbose_name_plural = "Vehículos"
 
 
-# ─────────────────────────────────────────
-# MODELO 3: Tarifa por tipo de vehículo
-# ─────────────────────────────────────────
+#TARIFAS
 class TarifaParqueo(models.Model):
     TIPO_CHOICES = [
         ('carro',  'Carro'),
@@ -70,9 +64,7 @@ class TarifaParqueo(models.Model):
         verbose_name_plural = "Tarifas"
 
 
-# ─────────────────────────────────────────
-# MODELO 4: Registro de entrada/salida
-# ─────────────────────────────────────────
+#REGISTRO DE ENTRADA Y SALIDA
 class RegistroParqueo(models.Model):
     vehiculo        = models.ForeignKey(
         Vehiculo,
